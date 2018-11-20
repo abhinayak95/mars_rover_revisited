@@ -8,35 +8,59 @@ defmodule MarsRover do
   # def direction('N','L') do
   #   %MarsRover{direction: 'W'}
   # end
-  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: 'E'} ,'L') do
-    rover = %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: 'N'}
+  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "E"} ,"L") do
+    %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "N"}
   end
 
-  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: 'E'} ,'R') do
-    %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: 'S'}
+  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "E"} ,"R") do
+    %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "S"}
   end
 
-  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: 'W'} ,'L') do
-    %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: 'S'}
+  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "E"} ,"M") do
+    %MarsRover{x_coord: x_coord + 1, y_coord: y_coord, direction: "E"}
   end
 
-  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: 'W'} ,'L') do
-    %MarsRover{x_coord: x_coord, y_ coord: y_coord, direction: 'N'}
+  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "W"} ,"L") do
+    %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "S"}
   end
 
-  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: 'N'} ,'L') do
-    %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: 'W'}
+  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "W"} ,"R") do
+    %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "N"}
   end
 
-  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: 'N'} ,'R') do
-    %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: 'E'}
+  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "W"} ,"M") do
+    %MarsRover{x_coord: x_coord - 1, y_coord: y_coord, direction: "W"}
+  end
+
+  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "N"} ,"L") do
+    %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "W"}
+  end
+
+  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "N"} ,"R") do
+    %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "E"}
+  end
+
+  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "N"} ,"M") do
+    %MarsRover{x_coord: x_coord, y_coord: y_coord + 1, direction: "N"}
+  end
+
+  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "S"} ,"L") do
+    %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "E"}
+  end
+
+  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "S"} ,"R") do
+    %MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "W"}
+  end
+
+  def direction(%MarsRover{x_coord: x_coord, y_coord: y_coord, direction: "S"} ,"M") do
+    %MarsRover{x_coord: x_coord, y_coord: y_coord - 1, direction: "S"}
   end
 
   def move(rover, instructions) do
     instruction_list = String.split(instructions, "", trim: true)
-    Enum.each instruction_list, fn instruction ->
-      rover = direction(rover, instruction)
-    end
+    rover = Enum.reduce(instruction_list, rover , fn instruction, rover ->
+      direction(rover, instruction)
+    end)
   end
 
 end
@@ -44,9 +68,7 @@ end
 
 defmodule Main do
   def main do
-    rover = %MarsRover{x_coord: 1, y_coord: 2, direction: 'E'}
-    MarsRover.move(rover,"L")
-    IO.inspect rover
-    # MarsRover.move("LMLMLMLMM")
+    rover = %MarsRover{x_coord: 3, y_coord: 3, direction: "E"}
+    rover = MarsRover.move(rover,"MMRMMRMRRM")
   end
 end
